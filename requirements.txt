@@ -1,0 +1,7 @@
+transformers
+supervision
+roboflow
+timm
+einops
+onnx
+onnxruntime

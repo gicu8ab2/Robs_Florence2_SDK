@@ -1,0 +1,32 @@
+FROM nvcr.io/nvidia/l4t-jetpack:r35.2.1
+
+
+ENV APT_INSTALL="apt-get install -y --no-install-recommends --fix-missing" \
+    PIP_INSTALL="pip install"
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update
+RUN $APT_INSTALL build-essential sudo emacs git cmake libsm6 libxext6 \
+        libxrender-dev libglib2.0-0 libgl1-mesa-glx libssl-dev ffmpeg \
+        libopenmpi-dev libx264-dev python3-pip \
+        libopenblas-dev
+
+# RUN wget https://developer.download.nvidia.com/compute/cusparselt/redist/libcusparse_lt/linux-sbsa/libcusparse_lt-linux-sbsa-0.5.2.1-archive.tar.xz && \
+#     tar xf libcusparse_lt-linux-sbsa-0.5.2.1-archive.tar.xz && \
+#     cp -a libcusparse_lt-linux-sbsa-0.5.2.1-archive/include/* /usr/local/cuda/include/ && \
+#     cp -a libcusparse_lt-linux-sbsa-0.5.2.1-archive/lib/* /usr/local/cuda/lib64/
+
+
+WORKDIR /workspace
+COPY torch-2.1.0-cp310-cp310-linux_aarch64.whl /workspace
+
+
+RUN $PIP_INSTALL --upgrade pip && \
+    $PIP_INSTALL setuptools wheel && \
+    python -m pip install torch-2.1.0-cp310-cp310-linux_aarch64.whl && \
+    python -m pip install -r requirements.txt
+
+
+
+CMD tail -f /dev/null

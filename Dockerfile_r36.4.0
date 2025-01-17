@@ -1,0 +1,38 @@
+FROM nvcr.io/nvidia/l4t-jetpack:r36.4.0
+
+
+ENV APT_INSTALL="apt-get install -y --no-install-recommends --fix-missing" \
+    PIP_INSTALL="pip install"
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update
+RUN $APT_INSTALL build-essential sudo emacs git cmake libsm6 libxext6 \
+        libxrender-dev libglib2.0-0 libgl1-mesa-glx libssl-dev ffmpeg \
+        libopenmpi-dev libx264-dev python3-pip \
+        libopenblas-dev
+
+
+RUN wget https://developer.download.nvidia.com/compute/cusparselt/redist/libcusparse_lt/linux-sbsa/libcusparse_lt-linux-sbsa-0.5.2.1-archive.tar.xz && \
+    tar xf libcusparse_lt-linux-sbsa-0.5.2.1-archive.tar.xz && \
+    cp -a libcusparse_lt-linux-sbsa-0.5.2.1-archive/include/* /usr/local/cuda/include/ && \
+    cp -a libcusparse_lt-linux-sbsa-0.5.2.1-archive/lib/* /usr/local/cuda/lib64/
+
+
+RUN wget -v https://github.com/bazelbuild/bazelisk/releases/download/v1.20.0/bazelisk-linux-arm64 && \
+    sudo mv bazelisk-linux-arm64 /usr/bin/bazel && \
+    chmod +x /usr/bin/bazel
+
+RUN $PIP_INSTALL --upgrade pip && \
+    $PIP_INSTALL transformers supervision \
+                 roboflow timm einops onnx onnxruntime
+
+
+RUN $PIP_INSTALL --upgrade pip && \
+    $PIP_INSTALL setuptools wheel && \
+    python -m pip install --no-cache-dir https://developer.download.nvidia.com/compute/redist/jp/v61/pytorch/torch-2.5.0a0+872d972e41.nv24.08.17622132-cp310-cp310-linux_aarch64.whl
+
+RUN pip install numpy==1.26.4 && \
+    pip install torchvision==0.16.0 --no-deps
+
+CMD tail -f /dev/null

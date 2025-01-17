@@ -1,0 +1,8 @@
+outputs/
+models/Florence-2-base-ft/pytorch_model.bin
+models/Florence-2-base/
+models/Florence-2-large/
+models/Florence-2-large-ft/
+*.whl
+*.bin
+auto-label/
