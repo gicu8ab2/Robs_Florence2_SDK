@@ -21,13 +21,13 @@ RUN wget https://developer.download.nvidia.com/compute/cusparselt/redist/libcusp
 
 RUN $PIP_INSTALL --upgrade pip && \
     $PIP_INSTALL setuptools wheel && \
-    python -m pip install --no-cache-dir torch torchvision https://developer.download.nvidia.com/compute/redist/jp/v61/pytorch/torch-2.5.0a0+872d972e41.nv24.08.17622132-cp310-cp310-linux_aarch64.whl
+    python -m pip install --no-cache-dir torch torchvision http://jetson.webredirect.org/jp6/cu126/+f/5cf/9ed17e35cb752/torch-2.5.0-cp310-cp310-linux_aarch64.whl#sha256=5cf9ed17e35cb7523812aeda9e7d6353c437048c5a6df1dc6617650333049092
 
-
+# pip install
 RUN $PIP_INSTALL numpy==1.26.4 && \
     $PIP_INSTALL --no-deps transformers && \
     $PIP_INSTALL --no-deps timm && \
-    $PIP_INSTALL huggingface_hub regex!=2019.12.17 safetensors>=0.4.1 tokenizers roboflow einops
+    $PIP_INSTALL huggingface_hub regex!=2019.12.17 safetensors>=0.4.1 tokenizers roboflow einops supervision
 
 
 CMD tail -f /dev/null
