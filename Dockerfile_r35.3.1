@@ -13,17 +13,13 @@ RUN $APT_INSTALL build-essential sudo emacs git cmake libsm6 libxext6 \
         libopenblas-dev
 
 
-# RUN wget https://developer.download.nvidia.com/compute/cusparselt/redist/libcusparse_lt/linux-sbsa/libcusparse_lt-linux-sbsa-0.5.2.1-archive.tar.xz && \
-#     tar xf libcusparse_lt-linux-sbsa-0.5.2.1-archive.tar.xz && \
-#     cp -a libcusparse_lt-linux-sbsa-0.5.2.1-archive/include/* /usr/local/cuda/include/ && \
-#     cp -a libcusparse_lt-linux-sbsa-0.5.2.1-archive/lib/* /usr/local/cuda/lib64/
-
-
+WORKDIR /workspace
+COPY . /workspace
 
 RUN $PIP_INSTALL --upgrade pip && \
     $PIP_INSTALL setuptools wheel && \
-    python -m pip install --no-cache-dir https://pypi.jetson-ai-lab.dev/jp5/cu114/torch-2.2.0-cp310-cp310-linux_aarch64.whl
-    python -m pip install --no-cache-dir https://pypi.jetson-ai-lab.dev/jp5/cu114/torchvision-0.17.2+c1d70fe-cp310-cp310-linux_aarch64.whl
+    python3 -m pip install --no-cache-dir torch-2.2.0-cp310-cp310-linux_aarch64.whl && \
+    python3 -m pip install --no-cache-dir torchvision-0.17.2+c1d70fe-cp310-cp310-linux_aarch64.whl
 
 # pip install
 RUN $PIP_INSTALL --no-deps transformers && \
