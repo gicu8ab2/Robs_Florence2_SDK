@@ -16,19 +16,19 @@ RUN $APT_INSTALL build-essential sudo emacs git cmake libsm6 libxext6 \
 WORKDIR /workspace
 COPY . /workspace
 
-RUN $PIP_INSTALL --upgrade pip && \
-    $PIP_INSTALL setuptools wheel && \
-    python3 -m pip install --no-cache-dir torch-2.2.0-cp38-cp38-linux_aarch64.whl
-
-    # python3 -m pip install --no-cache-dir torch-2.2.0-cp310-cp310-linux_aarch64.whl && \
-    # python3 -m pip install --no-cache-dir torchvision-0.17.2+c1d70fe-cp310-cp310-linux_aarch64.whl
+RUN python3 -m pip install --upgrade pip && \
+    python3 -m pip install setuptools wheel && \
+    python3 -m pip install --no-cache-dir torch-2.2.0-cp38-cp38-linux_aarch64.whl && \
+    python3 -m pip install --no-cache-dir torchvision-0.17.2+c1d70fe-cp38-cp38-linux_aarch64.whl
 
 
 
 # pip install
-RUN $PIP_INSTALL --no-deps transformers && \
-    $PIP_INSTALL --no-deps timm && \
-    $PIP_INSTALL tokenizers roboflow einops supervision
+RUN python3 -m pip install --no-deps transformers && \
+    python3 -m pip install --no-deps timm && \
+    python3 -m pip install roboflow einops supervision
 
+
+# tokenizers
 
 CMD tail -f /dev/null
